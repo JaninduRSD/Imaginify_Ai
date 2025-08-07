@@ -41,6 +41,9 @@ const TransformationForm = ({action, data =null,userId, type, creditBalance, con
   const transformationType = transformationTypes[type];
   const [image, setImage] = useState(data)
   const [newTransformation, setNewTransformation]=useState<Transformations | null>(null);
+  const [isSubmitting,setSubmitting]=useState(false);
+  const [isTransforming,setTransforming]= useState(false);
+  const [transformationConfig, settransformationConfig] =useState(config)
   const initialValues = data && action === 'Update' ? {
       title: data?.title,
       aspectRatio: data?.aspectRatio,
@@ -62,16 +65,26 @@ const TransformationForm = ({action, data =null,userId, type, creditBalance, con
     console.log(values)
   }
 
-  // const onSelectFieldHandler(value:string,onchangeField:(value:string)=>void)=>{
-    
+  const onSelectFieldHandler = (value: string, onChangeField: (value: string) => void) => {
+    const imageSize = aspectRatioOptions[value as AspectRatioKey]
 
-  // }
+    setImage((prevState : any) =>({
+      ...prevState,
+      aspectRatio :imageSize.aspectRatio,
+    }))
+  }
+
+  const onInputChangeHandle=(fieldName: string, value: string, type: string, onChangeField: (value: string) => void)=>{
+
+  }
+
+  const onTransformHandler = () =>{}
 
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        {creditBalance < Math.abs(creditFee) && <InsufficientCreditsModal />}
+        
         <CustomField 
           control={form.control}
           name="title"
@@ -105,6 +118,60 @@ const TransformationForm = ({action, data =null,userId, type, creditBalance, con
             )}  
           />
         )}
+
+
+        {(type==='remove' || type==='recolor')&&(
+          <div className="prompt-field">
+            <CustomField 
+            control={form.control}
+            name="prompt"
+            formLabel={type === 'remove' ? 'Object to remove' : 'Object to recolor'}
+            className="w-full"
+            render={({ field }) => <Input 
+            value={field.value}
+            className="input-field"
+            onChange={(e) => onInputChangeHandle(
+              'prompt',
+              e.target.value,
+              type,
+              field.onChange
+            )} />}
+          />
+
+
+          {type === 'recolor' && (
+            <CustomField
+            control={form.control}
+            name='color'
+            formLabel="Replacement Color"
+            className="w-full"
+            render={({field})=>(
+              <Input 
+              value={field.value}
+            className="input-field"
+            onChange={(e) => onInputChangeHandle(
+              'prompt',
+              e.target.value,
+              type,
+              field.onChange)}/>
+            )} />
+          )
+
+          }
+          </div>
+        )}
+        <div className="flex flex-col gap-4">
+        <Button type="submit"
+        className="submit-button capitalize"
+        disabled={isTransforming || newTransformation===null}
+        onClick={onTransformHandler}>{isTransforming ? 'Transforming...' : 'Apply Transformation' }</Button>
+
+
+
+        <Button type="submit"
+        className="submit-button capitalize"
+        disabled={isSubmitting}>{isSubmitting ? 'Submitting...' : 'Save Image'}</Button>
+        </div>
       </form>
     </Form>
   )
