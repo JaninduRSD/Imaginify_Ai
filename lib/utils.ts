@@ -155,3 +155,12 @@ export const deepMergeObjects = (obj1: any, obj2: any) => {
 
   return output;
 };
+
+
+///deep merge
+// obj1 = { color: "red", size: { width: 100 } }
+// obj2 = { size: { height: 200 }, shape: "circle" }
+
+
+// The result will be:
+// { color: "red", size: { width: 100, height: 200 }, shape: "circle" }
