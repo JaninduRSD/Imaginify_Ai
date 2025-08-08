@@ -26,6 +26,7 @@ export async function getUserById(userId: string) {
       const user = await User.findOne({ clerkId: userId });
   
       if (!user) throw new Error("User not found");
+      
   
       return JSON.parse(JSON.stringify(user));
     } catch (error) {
