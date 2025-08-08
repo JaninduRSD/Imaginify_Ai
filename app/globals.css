@@ -302,7 +302,8 @@
 
   /* MediaUploader Component */
   .media-uploader_cldImage {
-    @apply h-fit min-h-72 w-full rounded-[10px] border border-dashed bg-purple-100/20 object-cover p-2;
+    @apply h-fit w-full rounded-[10px] border border-dashed bg-purple-100 object-cover p-2;
+    min-height: 18rem; /* 72 * 0.25rem = 18rem */
   }
 
   .media-uploader_cta {
@@ -375,8 +376,10 @@
   }
 
   .transformed-placeholder {
-    @apply flex-center p-14-medium h-full min-h-72 flex-col gap-5 rounded-[16px] border border-dashed bg-purple-100/20 shadow-inner;
+    @apply flex items-center justify-center p-14-medium h-full min-h-[288px] flex-col gap-5 rounded-[16px] border border-dashed bg-purple-100 shadow-inner;
   }
+  
+  
 }
 
 /* =====  CLERK OVERRIDES */
