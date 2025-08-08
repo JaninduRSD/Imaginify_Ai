@@ -1,13 +1,25 @@
 import { toast, useToast } from "@/hooks/use-toast";
 import React from "react";
 import {CldUploadWidget} from "next-cloudinary"
+import Image from "next/image";
 
-
+type MediaUploaderProps = {
+    onValueChange: (value: string) => void;
+    setImage: React.Dispatch<any>;
+    publicId: string;
+    image: any;
+    type: string;
+  }
 
 
 const MediaUploader = ({
-    onValue
-}) =>{
+    onValueChange,
+    setImage,
+    image,
+    publicId,
+    type
+}: MediaUploaderProps) 
+ =>{
     const {toast} = useToast()
     const onUploadSuccessHandler = (result: any) => {
     
@@ -40,7 +52,29 @@ const MediaUploader = ({
         onSuccess={onUploadSuccessHandler}
         onError={onUploadErrorHandler}>
 
-            {({open})=>}
+            {({open})=>(
+                <div className="flex flex-col gap-4">
+                    <h3 className="h3-bold text-dark-600">
+                        Original
+                    </h3>
+
+                    {publicId?(
+                        <>
+                        Here Is The Image
+                        </>):(
+                            <div className="media-uploader_cta" onClick={() => open()}>
+                                <div className="media-uploader_cta-image">
+                                    <Image 
+                                    src="/assets/icons/add.svg"
+                                    alt="Add Image"
+                                    width={24}
+                                    height={24}
+                                    />
+                                </div>
+                                <p className="p-14-medium">Click here to upload image</p>
+                            </div>
+                </div>
+            )}
       </CldUploadWidget>
     )
 }
