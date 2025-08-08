@@ -1,7 +1,7 @@
 "use client"
 
 
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -26,7 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { AspectRatioKey } from "@/lib/utils";
+import { AspectRatioKey, debounce, deepMergeObjects } from "@/lib/utils";
 
 export const formSchema = z.object({
   title:z.string(),
@@ -42,8 +42,9 @@ const TransformationForm = ({action, data =null,userId, type, creditBalance, con
   const [image, setImage] = useState(data)
   const [newTransformation, setNewTransformation]=useState<Transformations | null>(null);
   const [isSubmitting,setSubmitting]=useState(false);
-  const [isTransforming,setTransforming]= useState(false);
-  const [transformationConfig, settransformationConfig] =useState(config)
+  const [isTransforming,setIsTransforming]= useState(false);
+  const [transformationConfig, settransformationConfig] =useState(config);
+  const [isPending, startTransition]=useTransition()
   const initialValues = data && action === 'Update' ? {
       title: data?.title,
       aspectRatio: data?.aspectRatio,
@@ -71,14 +72,41 @@ const TransformationForm = ({action, data =null,userId, type, creditBalance, con
     setImage((prevState : any) =>({
       ...prevState,
       aspectRatio :imageSize.aspectRatio,
+      width: imageSize.width,
+      height: imageSize.height,
     }))
+
+    setNewTransformation(transformationType.config);
   }
 
   const onInputChangeHandle=(fieldName: string, value: string, type: string, onChangeField: (value: string) => void)=>{
-
+    debounce(() => {
+      setNewTransformation((prevState:any)=>({
+        ...prevState,
+        [type]:{
+          ...prevState?.[type],
+          [fieldName ==='prompt' ? 'prompt' : 'to']: value
+        }
+      }))
+    return onChangeField(value)
+    },1000);
   }
 
-  const onTransformHandler = () =>{}
+
+  
+  const onTransformHandler = async () =>{
+    setIsTransforming(true)
+
+    settransformationConfig(
+      deepMergeObjects(newTransformation,transformationConfig)
+    )
+
+    setNewTransformation(null)
+    startTransition(async ()=>{
+      //todo
+    })
+
+  }
 
 
   return (
