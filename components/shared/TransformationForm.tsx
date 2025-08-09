@@ -20,6 +20,8 @@ import { AspectRatioKey, debounce, deepMergeObjects } from "@/lib/utils";
 import MediaUploader from "./MediaUploader";
 import TransformedImage from "./TransformedImage";
 import { updateCreadits } from "@/lib/actions/user.actions";
+import { getCldImageUrl } from "next-cloudinary";
+import { title } from "process";
 
 export const formSchema = z.object({
   title: z.string(),
@@ -40,7 +42,7 @@ const TransformationForm = ({
   const transformationType = transformationTypes[type];
   const [image, setImage] = useState(data);
   const [newTransformation, setNewTransformation] = useState<Transformations | null>(null);
-  const [isSubmitting, setSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isTransforming, setIsTransforming] = useState(false);
   const [transformationConfig, setTransformationConfig] = useState(config);
   const [isPending, startTransition] = useTransition();
@@ -62,7 +64,30 @@ const TransformationForm = ({
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    setIsSubmitting(true);
+
+    if(data|| image){
+      const transformationUrl = getCldImageUrl({
+        width:image?.width,
+        height: image?.height,
+        src:image?.publicId,
+        ...transformationConfig
+      })
+
+      const imageData={
+        title: values.title,
+        publicId:image?.publicId,
+        transformationType: type,
+        width: image?.width,
+        height:image?.height,
+        config:transformationConfig,
+        secureUrl:image?.secureUrl,
+        transformationUrl,
+        aspectRatio:values.aspectRatio ,
+        prompt:values.prompt,
+        color:values.color
+      }
+    }
   }
 
   const onSelectFieldHandler = (value: string, onChangeField: (value: string) => void) => {
