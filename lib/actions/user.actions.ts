@@ -70,4 +70,24 @@ export async function DeleteUser(clerkId:string){
     }
 }
 
+//use credis
+export async function updateCreadits(userId: string, creditFee: number){
+    try{
+        await connectTodatabase();
+    
+    const updatedUserCredits = await User.findOneAndUpdate(
+        {_id: userId},
+        {$inc:{credits:creditFee}},
+        {new: true}
+    )
+    if (!updatedUserCredits) throw new Error ("User credits update failed");
+
+    return JSON.parse(JSON.stringify
+        (updatedUserCredits)
+    );
+}catch(error){
+    handleError(error);
+}
+}
+
 
