@@ -19,6 +19,7 @@ import {
 import { AspectRatioKey, debounce, deepMergeObjects } from "@/lib/utils";
 import MediaUploader from "./MediaUploader";
 import TransformedImage from "./TransformedImage";
+import { updateCreadits } from "@/lib/actions/user.actions";
 
 export const formSchema = z.object({
   title: z.string(),
@@ -100,6 +101,7 @@ const TransformationForm = ({
     setNewTransformation(null);
     startTransition(async () => {
       // TODO: Transformation logic
+      await updateCreadits(userId,-1)
     });
   };
 
