@@ -3,11 +3,11 @@ import { model, models, Schema, Document } from "mongoose";
 
 import { Types } from "mongoose";
 
-export interface Image extends Document {
+export interface IImage extends Document {
   title: string;
   transformationType: string;
   publicId: string;
-  secureUrl: URL;
+  secureURL: string;
   width?: number;
   height?: number;
   config?: object;
@@ -30,11 +30,11 @@ const ImageSchema = new Schema({
     title:{type: String, required: true},
     transformationType:{type: String, required: true},
     publicId:{type: String, required: true},
-    secureUrl:{type: URL, required: true},
+    secureURL:{type: String, required: true},
     width:{type: Number},
     height:{type: Number},
     config:{type: Object},
-    transformationUrl:{type: URL},
+    transformationUrl:{type: String},
     aspectRatio:{type: String},
     color:{type: String},
     prompt:{type: String},
