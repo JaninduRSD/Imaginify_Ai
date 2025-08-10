@@ -51,8 +51,8 @@ const MediaUploader = ({
       className: "success-toast",
     });
     // You might want to update image or publicId here via props callbacks
-    onValueChange(result.info.public_id);
-    setImage(result.info);
+    // onValueChange(result.info.public_id);
+    // setImage(result.info);
   };
 
   const onUploadErrorHandler = () => {
