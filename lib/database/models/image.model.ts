@@ -11,7 +11,7 @@ export interface IImage extends Document {
   width?: number;
   height?: number;
   config?: object;
-  transformationUrl?: URL;
+  transformationUrl?: string;
   aspectRatio?: string;
   color?: string;
   prompt?: string;
