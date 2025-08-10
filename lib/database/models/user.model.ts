@@ -23,7 +23,7 @@ const UserSchema = new Schema({
     planId : {type:Number, default:1},
     creditBalance:{
         type:Number,
-        default:10,
+        default:1000,
     },
 
 
