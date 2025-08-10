@@ -276,7 +276,7 @@
   }
 
   .transformation-original_image {
-    @apply h-fit min-h-72 w-full rounded-[10px] border border-dashed bg-purple-100/20 object-cover p-2;
+    @apply h-fit min-h-[18rem] w-full rounded-[10px] border border-dashed bg-purple-100/20 object-cover p-2;
   }
 
   /* Collection Component */
@@ -325,8 +325,9 @@
 
   /* Search Component */
   .search {
-    @apply flex w-full rounded-[16px] border-2 border-purple-200/20 bg-white px-4 shadow-sm shadow-purple-200/15 md:max-w-96;
+    @apply flex w-full rounded-[16px] border-2 border-purple-200 bg-white px-4 shadow-sm shadow-purple-200 md:max-w-[24rem];
   }
+  
 
   /* Sidebar Component */
   .sidebar {
